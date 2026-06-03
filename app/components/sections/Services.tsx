@@ -10,7 +10,6 @@ import {
   CheckCircle,
   Lock,
   Hash,
-  Gem,
   Clock,
   Hand,
   Eye,
@@ -28,7 +27,7 @@ const services = [
     icon: Hand,
   },
   {
-    title: "Face Reading ",
+    title: "Face Reading",
     desc: "In-depth facial feature analysis to understand personality traits, emotions, behavior patterns, and life tendencies for better self-awareness.",
     icon: Eye,
   },
@@ -52,11 +51,6 @@ const services = [
     desc: "Discover your life path, destiny numbers, and how they influence decisions, relationships, and success.",
     icon: Hash,
   },
-  // {
-  //   title: "Gemstone Recommendation",
-  //   desc: "Personalized gemstone suggestions to strengthen beneficial planetary energies and reduce obstacles.",
-  //   icon: Gem,
-  // },
   {
     title: "Muhurta (Auspicious Timing)",
     desc: "Find the perfect time for weddings, business launches, travel, and major life events.",
@@ -66,12 +60,13 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="relative pt-12 pb-12 px-6 lg:px-16 overflow-hidden">
-      {/* Ambient glow */}
+    <section
+      id="services"
+      className="relative pt-12 pb-12 px-6 lg:px-16 overflow-hidden"
+    >
       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-[#D4AF37]/[0.03] blur-3xl pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto text-[#F2D6A0]">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,34 +82,30 @@ export default function Services() {
           </div>
         </motion.div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {services.map((service, i) => {
             const Icon = service.icon;
+
             return (
               <motion.div
-                key={i}
+                key={service.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
                 className="relative group"
               >
-                {/* Hover glow */}
                 <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 bg-[#D4AF37]/[0.05] blur-lg transition duration-500" />
 
                 <div className="relative h-full rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-5 transition-all duration-300 group-hover:border-[#D4AF37]/30 group-hover:-translate-y-1">
-                  {/* Icon */}
                   <div className="w-10 h-10 flex items-center justify-center rounded-lg border border-[#D4AF37]/20 bg-[#D4AF37]/[0.05] mb-4 group-hover:border-[#D4AF37]/40 transition-colors duration-300">
                     <Icon size={18} className="text-[#D4AF37]" />
                   </div>
 
-                  {/* Title */}
                   <h3 className="text-white text-sm font-medium mb-2">
                     {service.title}
                   </h3>
 
-                  {/* Desc */}
                   <p className="text-xs text-[#F2D6A0]/55 leading-relaxed">
                     {service.desc}
                   </p>
@@ -124,35 +115,28 @@ export default function Services() {
           })}
         </div>
 
-        {/* Trust bar */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 rounded-xl border border-white/10 bg-white/[0.02] backdrop-blur-md px-8 py-5"
+          className="mt-10 rounded-xl border border-white/10 bg-white/[0.02] backdrop-blur-md px-5 sm:px-8 py-5"
         >
-          <div className="flex flex-wrap items-center justify-between gap-6 text-xs text-[#F2D6A0]/60">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-xs text-[#F2D6A0]/60">
             <div className="flex items-center gap-3">
               <Sparkles size={14} className="text-[#D4AF37]" />
               <span>9+ Years Experience</span>
             </div>
-
-            <div className="hidden md:block h-5 w-px bg-white/10" />
 
             <div className="flex items-center gap-3">
               <Users size={14} className="text-[#D4AF37]" />
               <span>5000+ Clients Guided</span>
             </div>
 
-            <div className="hidden md:block h-5 w-px bg-white/10" />
-
             <div className="flex items-center gap-3">
               <CheckCircle size={14} className="text-[#D4AF37]" />
               <span>Root Cause Analysis</span>
             </div>
-
-            <div className="hidden md:block h-5 w-px bg-white/10" />
 
             <div className="flex items-center gap-3">
               <Lock size={14} className="text-[#D4AF37]" />

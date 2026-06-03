@@ -14,7 +14,10 @@ const Chakra = dynamic(() => import("./Chakra"), {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center px-4 sm:px-6 lg:px-16 pt-24 md:pt-28 pb-10">
+    <section
+      id="home"
+      className="relative min-h-[92vh] lg:min-h-screen flex items-center px-4 sm:px-6 lg:px-16 pt-24 md:pt-28 pb-10 overflow-hidden"
+    >
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-[#0B0B1A] pointer-events-none z-10" />
 

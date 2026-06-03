@@ -14,8 +14,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Astrology Platform",
-  description: "Cosmic astrology experience",
+  title: "Astro Patil | Vedic Astrology Consultation in Pune",
+  description:
+    "Get personalized Vedic astrology guidance for kundli reading, marriage compatibility, career, palmistry, numerology, face reading and vastu consultation.",
+  keywords: [
+    "Astro Patil",
+    "Astrologer in Pune",
+    "Vedic Astrology",
+    "Kundli Reading",
+    "Marriage Compatibility",
+    "Career Astrology",
+    "Palmistry",
+    "Numerology",
+    "Face Reading",
+    "Vastu Consultation",
+  ],
+  openGraph: {
+    title: "Astro Patil | Vedic Astrology Consultation",
+    description:
+      "Personalized astrology guidance for career, marriage, kundli, palmistry, numerology and vastu consultation.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "Astro Patil",
+  },
 };
 
 export default function RootLayout({
@@ -28,12 +49,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full text-[#F2D6A0] overflow-x-hidden">
-        {/* 🌌 GLOBAL BACKGROUND */}
+      <body className="min-h-full bg-[#0B0B1A] text-[#F2D6A0] overflow-x-hidden">
         <GlobalBackground />
 
-        {/* CONTENT */}
-        <div className="relative z-10 flex flex-col min-h-screen">
+        <div className="relative z-10 flex min-h-screen flex-col">
           {children}
         </div>
       </body>

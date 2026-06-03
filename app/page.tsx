@@ -1,4 +1,3 @@
-// page.tsx
 import Navbar from "./components/layout/Navbar";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
@@ -10,30 +9,14 @@ import Footer from "./components/layout/Footer";
 
 export default function Home() {
   return (
-    <main className="flex-1">
+    <main className="flex-1 overflow-x-hidden">
       <Navbar />
-
-      <div id="home">
-        <Hero />
-      </div>
-
-      <div id="about">
-        <About />
-      </div>
-
-      <div id="services">
-        <Services />
-      </div>
-
-      <div id="testimonials">
-        <Testimonials />
-      </div>
-
-      <div id="contact">
-        <FutureCTA />
-        <ContactSection />
-      </div>
-
+      <Hero />
+      <About />
+      <Services />
+      <Testimonials />
+      <FutureCTA />
+      <ContactSection />
       <Footer />
     </main>
   );

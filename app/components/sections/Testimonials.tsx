@@ -1,150 +1,112 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 
 const testimonials = [
   {
     name: "Sakshi",
     role: "Mumbai",
-    text: "Incredibly accurate birth chart reading. The predictions aligned perfectly with events in my life. I felt truly understood for the first time.",
+    text: "Incredibly accurate birth chart reading. The predictions aligned perfectly with events in my life.",
     rating: 5,
   },
   {
     name: "Piyush",
     role: "Nashik",
-    text: "I was skeptical at first, but the kundli reading was so accurate it left me speechless. Life-changing perspective. Thank you.",
+    text: "I was skeptical at first, but the kundli reading was so accurate it left me speechless.",
     rating: 5,
   },
   {
     name: "Vaishnavi",
     role: "Nagpur",
-    text: "The marriage compatibility reading gave us deep clarity before our wedding. We are so grateful for the honest and detailed guidance.",
+    text: "The marriage compatibility reading gave us deep clarity before our wedding.",
     rating: 5,
     highlight: true,
   },
   {
     name: "Aishwarya",
     role: "Mumbai",
-    text: "Career guidance was spot on. Helped me make a major decision with confidence. The planetary analysis was remarkably precise.",
+    text: "Career guidance was spot on. Helped me make a major decision with confidence.",
     rating: 5,
   },
   {
     name: "Dipanshu",
     role: "Kolkata",
-    text: "Very accurate predictions and helpful guidance. The Vastu consultation transformed the energy in my home. Highly recommended.",
+    text: "Very accurate predictions and helpful guidance. Highly recommended.",
     rating: 5,
   },
   {
     name: "Priya",
     role: "Pune",
-    text: "The gemstone recommendation made a noticeable difference in just weeks. I feel more centered and focused in everything I do.",
+    text: "The gemstone recommendation made a noticeable difference in just weeks.",
     rating: 5,
     highlight: true,
-  },
-  {
-    name: "Gaurav",
-    role: "Pune",
-    text: "Muhurta timing for my business launch was perfect. Everything fell into place beautifully. Will definitely consult again.",
-    rating: 5,
-  },
-  {
-    name: "Vividha",
-    role: "Delhi",
-    text: "Numerology reading was deeply insightful. My life path number explained so much about my personality and struggles.",
-    rating: 5,
-  },
-  {
-    name: "Nandini",
-    role: "Bangalore",
-    text: "The palmistry session was unlike anything I expected — detailed, personal, and genuinely thought-provoking. Truly a gifted reader.",
-    rating: 5,
-    highlight: true,
-  },
-  {
-    name: "Avrali",
-    role: "Indore",
-    text: "The face reading session felt incredibly accurate. It revealed personality traits about me that even close friends notice. Very insightful experience.",
-    rating: 5,
-  },
-  {
-    name: "Padma",
-    role: "Hyderabad",
-    text: "The astrology consultation was very detailed and practical. It helped me understand my current phase of life and gave clarity about next steps.",
-    rating: 5,
-  },
-  {
-    name: "Ananya",
-    role: "Varanasi",
-    text: "I didn’t expect palmistry to be this precise. The reader explained everything so calmly and it actually matched my life situations closely.",
-    rating: 5,
   },
 ];
 
 const VISIBLE = 3;
-const TOTAL = testimonials.length;
-const MAX_INDEX = TOTAL - VISIBLE;
+const AUTO_DELAY = 5000;
 
 export default function Testimonials() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const isPaused = useRef(false);
 
-  // ✅ UPDATED: move 3 cards at a time
+  const maxIndex = Math.max(testimonials.length - VISIBLE, 0);
+
   const next = useCallback(() => {
     setDirection(1);
-    setIndex((prev) => (prev + VISIBLE > MAX_INDEX ? 0 : prev + VISIBLE));
-  }, []);
+    setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  }, [maxIndex]);
 
   const prev = useCallback(() => {
     setDirection(-1);
-    setIndex((prev) =>
-      prev - VISIBLE < 0 ? MAX_INDEX : prev - VISIBLE
-    );
-  }, []);
+    setIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  }, [maxIndex]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (!isPaused.current) next();
-    }, 3500);
+    }, AUTO_DELAY);
+
     return () => clearInterval(timer);
   }, [next]);
 
-  const visible = testimonials.slice(index, index + VISIBLE);
+  const visibleTestimonials = testimonials.slice(index, index + VISIBLE);
 
-  const slideVariants = {
+  const slideVariants: Variants = {
     enter: (dir: number) => ({
       opacity: 0,
-      x: dir > 0 ? 60 : -60,
+      x: dir > 0 ? 80 : -80,
       scale: 0.96,
+      filter: "blur(6px)",
     }),
     center: {
       opacity: 1,
       x: 0,
       scale: 1,
-      transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+      filter: "blur(0px)",
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const,
+      },
     },
     exit: (dir: number) => ({
       opacity: 0,
-      x: dir > 0 ? -60 : 60,
+      x: dir > 0 ? -80 : 80,
       scale: 0.96,
-      transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] },
+      filter: "blur(6px)",
+      transition: {
+        duration: 0.45,
+        ease: "easeOut" as const,
+      },
     }),
   };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, delay: i * 0.08, ease: "easeOut" },
-    }),
-  };
-
   return (
     <section
-      className="relative pt-12 pb-12 px-6 lg:px-16 overflow-hidden"
+      id="testimonials"
+      className="relative overflow-hidden px-6 pt-12 pb-12 lg:px-16"
       onMouseEnter={() => {
         isPaused.current = true;
       }}
@@ -152,45 +114,49 @@ export default function Testimonials() {
         isPaused.current = false;
       }}
     >
-      <div className="relative z-10 max-w-6xl mx-auto">
-
-        {/* Header */}
+      <div className="relative z-10 mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex items-end justify-between mb-10"
+          className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
         >
           <div>
-            <div className="flex items-center gap-3 mb-3">
+            <div className="mb-3 flex items-center gap-3">
               <div className="h-px w-8 bg-gradient-to-r from-[#D4AF37]/60 to-transparent" />
-              <span className="text-lg tracking-[0.18em] uppercase text-[#D4AF37]/60 font-medium">
-                Client Stories
+              <span className="text-lg font-medium tracking-[0.18em] text-[#D4AF37]/60 uppercase">
+                What Clients Say
               </span>
             </div>
+
+            <p className="max-w-md text-sm text-[#F2D6A0]/45">
+              Trusted by clients across India for accurate guidance and
+              practical remedies.
+            </p>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* ❌ REMOVED: 01 / 10 counter */}
             <button
+              type="button"
               onClick={prev}
               aria-label="Previous testimonial"
-              className="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-[#F2D6A0]/60 hover:border-[#D4AF37]/40 hover:text-[#D4AF37] transition-all duration-200"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-[#F2D6A0]/60 transition-all duration-200 hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
             >
               <ChevronLeft size={16} />
             </button>
+
             <button
+              type="button"
               onClick={next}
               aria-label="Next testimonial"
-              className="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-[#F2D6A0]/60 hover:border-[#D4AF37]/40 hover:text-[#D4AF37] transition-all duration-200"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-[#F2D6A0]/60 transition-all duration-200 hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
             >
               <ChevronRight size={16} />
             </button>
           </div>
         </motion.div>
 
-        {/* Slider */}
         <div className="relative overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -200,63 +166,82 @@ export default function Testimonials() {
               initial="enter"
               animate="center"
               exit="exit"
-              className="grid md:grid-cols-3 gap-6"
+              className="grid grid-cols-1 gap-6 md:grid-cols-3"
             >
-              {visible.map((item, i) => (
+              {visibleTestimonials.map((item, i) => (
                 <motion.div
                   key={`${item.name}-${index}-${i}`}
-                  custom={i}
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="relative group"
+                  initial={{ opacity: 0, y: 24, scale: 0.95 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      duration: 0.45,
+                      delay: i * 0.12,
+                      ease: "easeOut",
+                    },
+                  }}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.02,
+                    transition: { duration: 0.25 },
+                  }}
+                  className="group relative"
                 >
                   {item.highlight && (
                     <motion.div
                       className="absolute -inset-2 rounded-xl bg-[#D4AF37]/[0.08] blur-2xl"
-                      animate={{ opacity: [0.4, 0.7, 0.4] }}
+                      animate={{ opacity: [0.3, 0.7, 0.3] }}
                       transition={{
                         duration: 3,
-                        repeat: 3,
+                        repeat: Infinity,
                         ease: "easeInOut",
                       }}
                     />
                   )}
 
                   <div
-                    className={`relative rounded-xl p-5 h-full border backdrop-blur-md transition-all duration-300 group-hover:-translate-y-1 ${
+                    className={`relative h-full rounded-xl border p-5 backdrop-blur-md transition-all duration-300 ${
                       item.highlight
                         ? "border-[#D4AF37]/25 bg-[#D4AF37]/[0.04]"
                         : "border-white/10 bg-white/[0.03] group-hover:border-[#D4AF37]/25"
                     }`}
                   >
-                    <div className="absolute inset-0 rounded-xl opacity-30 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.1),transparent_60%)]" />
+                    <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.1),transparent_60%)] opacity-30" />
 
                     <div className="relative mb-3">
-                      <Quote size={16} className="text-[#D4AF37]/40" fill="currentColor" />
+                      <Quote
+                        size={16}
+                        className="text-[#D4AF37]/40"
+                        fill="currentColor"
+                      />
                     </div>
 
-                    <p className="relative text-sm leading-relaxed text-[#F2D6A0]/75 mb-5">
+                    <p className="relative mb-5 text-sm leading-relaxed text-[#F2D6A0]/75">
                       {item.text}
                     </p>
 
-                    <div className="relative flex gap-0.5 mb-4">
-                      {Array.from({ length: item.rating }).map((_, si) => (
-                        <Star
-                          key={si}
-                          size={11}
-                          className="text-[#D4AF37]"
-                          fill="currentColor"
-                        />
-                      ))}
+                    <div className="relative mb-4 flex gap-0.5">
+                      {Array.from({ length: item.rating }).map(
+                        (_, starIndex) => (
+                          <Star
+                            key={starIndex}
+                            size={11}
+                            className="text-[#D4AF37]"
+                            fill="currentColor"
+                          />
+                        ),
+                      )}
                     </div>
 
                     <div className="relative flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B76E79] flex items-center justify-center text-xs text-black font-semibold shrink-0">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B76E79] text-xs font-semibold text-black">
                         {item.name[0]}
                       </div>
+
                       <div>
-                        <h4 className="text-white text-sm font-medium mb-1">
+                        <h4 className="mb-1 text-sm font-medium text-white">
                           {item.name}
                         </h4>
                         <span className="text-xs text-[#F2D6A0]/50">
@@ -264,14 +249,12 @@ export default function Testimonials() {
                         </span>
                       </div>
                     </div>
-
                   </div>
                 </motion.div>
               ))}
             </motion.div>
           </AnimatePresence>
         </div>
-
       </div>
     </section>
   );

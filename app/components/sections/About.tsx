@@ -12,7 +12,10 @@ const stats = [
 
 export default function About() {
   return (
-    <section className="relative pt-10 pb-12 px-6 lg:px-16 scroll-mt-20 overflow-hidden">
+    <section
+      id="about"
+      className="relative pt-10 pb-12 px-6 lg:px-16 scroll-mt-20 overflow-hidden"
+    >
       {/* Top blend from hero */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0B0B1A] to-transparent pointer-events-none z-10" />
 
@@ -27,7 +30,7 @@ export default function About() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="relative shrink-0 w-[260px] lg:w-[280px]"
+            className="relative shrink-0 w-full max-w-[260px] lg:max-w-[280px]"
           >
             {/* Outer glow */}
             <div className="absolute -inset-3 rounded-3xl bg-gradient-to-br from-[#D4AF37]/15 to-[#B76E79]/[0.08] blur-xl opacity-60" />
@@ -35,12 +38,13 @@ export default function About() {
             {/* Gold border frame */}
             <div className="relative rounded-2xl p-[1.5px] bg-gradient-to-br from-[#D4AF37]/40 via-[#D4AF37]/10 to-[#B76E79]/25">
               <div className="relative rounded-2xl overflow-hidden bg-[#0d0b1a]">
-                <div className="w-[280px] h-[373px] relative">
+                <div className="aspect-[3/4] w-full relative">
                   <Image
                     src="/images/Image.png"
-                    alt="Vedic astrologer"
+                    alt="Astro Patil - Vedic Astrologer and Astrology Consultant"
                     fill
                     className="object-cover object-top"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     priority
                   />
                 </div>

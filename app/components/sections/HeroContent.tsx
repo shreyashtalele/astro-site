@@ -59,7 +59,7 @@ export default function HeroContent() {
       >
         {/* WhatsApp */}
         <motion.a
-          href="https://wa.me/11233556780"
+          href="https://wa.me/917385803537?text=Hello%20Astro%20Patil,%20I%20would%20like%20personal%20astrology%20guidance."
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.03 }}
@@ -70,7 +70,6 @@ export default function HeroContent() {
           <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           <span className="relative z-10">Get Personal Guidance</span>
         </motion.a>
-
         {/* Explore */}
         <motion.a
           href="#services"
