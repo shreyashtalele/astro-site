@@ -72,7 +72,7 @@ ${message}`;
   return (
     <section
       id="contact"
-      className="relative pt-12 pb-16 px-6 lg:px-16 overflow-hidden"
+      className="relative pt-8 pb-8 px-6 lg:px-16 overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_80%,rgba(212,175,55,0.04),transparent_70%)] pointer-events-none" />
 

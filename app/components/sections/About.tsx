@@ -14,7 +14,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative pt-10 pb-12 px-6 lg:px-16 scroll-mt-20 overflow-hidden"
+      className="relative pt-8 pb-8 px-6 lg:px-16 scroll-mt-20 overflow-hidden"
     >
       {/* Top blend from hero */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0B0B1A] to-transparent pointer-events-none z-10" />

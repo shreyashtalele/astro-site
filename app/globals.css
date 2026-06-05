@@ -26,6 +26,7 @@ section {
   position: relative;
   padding-left: 24px;
   padding-right: 24px;
+  scroll-margin-top: 90px;
 }
 
 /* Container */

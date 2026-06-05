@@ -45,42 +45,66 @@ const testimonials = [
   },
 ];
 
-const VISIBLE = 3;
+const DESKTOP_VISIBLE = 3;
+const MOBILE_VISIBLE = 1;
 const AUTO_DELAY = 5000;
 
 export default function Testimonials() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(DESKTOP_VISIBLE);
+
   const isPaused = useRef(false);
 
-  const maxIndex = Math.max(testimonials.length - VISIBLE, 0);
+  useEffect(() => {
+    const updateVisibleCount = () => {
+      setVisibleCount(
+        window.innerWidth < 768 ? MOBILE_VISIBLE : DESKTOP_VISIBLE,
+      );
+    };
+
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount);
+
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, []);
+
+  useEffect(() => {
+    setIndex(0);
+  }, [visibleCount]);
+
+  const totalGroups = Math.ceil(testimonials.length / visibleCount);
 
   const next = useCallback(() => {
     setDirection(1);
-    setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  }, [maxIndex]);
+    setIndex((prev) => (prev + 1) % totalGroups);
+  }, [totalGroups]);
 
   const prev = useCallback(() => {
     setDirection(-1);
-    setIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
-  }, [maxIndex]);
+    setIndex((prev) => (prev - 1 + totalGroups) % totalGroups);
+  }, [totalGroups]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (!isPaused.current) next();
+      if (!isPaused.current) {
+        next();
+      }
     }, AUTO_DELAY);
 
     return () => clearInterval(timer);
   }, [next]);
 
-  const visibleTestimonials = testimonials.slice(index, index + VISIBLE);
+  const start = index * visibleCount;
+
+  const visibleTestimonials = testimonials.slice(start, start + visibleCount);
 
   const slideVariants: Variants = {
     enter: (dir: number) => ({
       opacity: 0,
       x: dir > 0 ? 80 : -80,
-      scale: 0.96,
-      filter: "blur(6px)",
+      scale: 0.97,
+      filter: "blur(5px)",
     }),
     center: {
       opacity: 1,
@@ -88,25 +112,26 @@ export default function Testimonials() {
       scale: 1,
       filter: "blur(0px)",
       transition: {
-        duration: 0.6,
-        ease: "easeOut" as const,
+        duration: 0.55,
+        ease: "easeOut",
       },
     },
     exit: (dir: number) => ({
       opacity: 0,
       x: dir > 0 ? -80 : 80,
-      scale: 0.96,
-      filter: "blur(6px)",
+      scale: 0.97,
+      filter: "blur(5px)",
       transition: {
-        duration: 0.45,
-        ease: "easeOut" as const,
+        duration: 0.35,
+        ease: "easeOut",
       },
     }),
   };
+
   return (
     <section
       id="testimonials"
-      className="relative overflow-hidden px-6 pt-12 pb-12 lg:px-16"
+      className="relative overflow-hidden px-6 pt-8 pb-8 lg:px-16"
       onMouseEnter={() => {
         isPaused.current = true;
       }}
@@ -120,12 +145,12 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
+          className="mb-6 flex flex-row items-center justify-between gap-4"
         >
           <div>
             <div className="mb-3 flex items-center gap-3">
               <div className="h-px w-8 bg-gradient-to-r from-[#D4AF37]/60 to-transparent" />
-              <span className="text-lg font-medium tracking-[0.18em] text-[#D4AF37]/60 uppercase">
+              <span className="text-base font-medium tracking-[0.18em] text-[#D4AF37]/60 uppercase sm:text-lg">
                 What Clients Say
               </span>
             </div>
@@ -136,7 +161,7 @@ export default function Testimonials() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={prev}
@@ -160,31 +185,31 @@ export default function Testimonials() {
         <div className="relative overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
-              key={index}
+              key={`${index}-${visibleCount}`}
               custom={direction}
               variants={slideVariants}
               initial="enter"
               animate="center"
               exit="exit"
-              className="grid grid-cols-1 gap-6 md:grid-cols-3"
+              className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6"
             >
               {visibleTestimonials.map((item, i) => (
                 <motion.div
                   key={`${item.name}-${index}-${i}`}
-                  initial={{ opacity: 0, y: 24, scale: 0.95 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.97 }}
                   animate={{
                     opacity: 1,
                     y: 0,
                     scale: 1,
                     transition: {
-                      duration: 0.45,
-                      delay: i * 0.12,
+                      duration: 0.4,
+                      delay: i * 0.08,
                       ease: "easeOut",
                     },
                   }}
                   whileHover={{
-                    y: -8,
-                    scale: 1.02,
+                    y: -6,
+                    scale: 1.015,
                     transition: { duration: 0.25 },
                   }}
                   className="group relative"
@@ -192,7 +217,7 @@ export default function Testimonials() {
                   {item.highlight && (
                     <motion.div
                       className="absolute -inset-2 rounded-xl bg-[#D4AF37]/[0.08] blur-2xl"
-                      animate={{ opacity: [0.3, 0.7, 0.3] }}
+                      animate={{ opacity: [0.25, 0.55, 0.25] }}
                       transition={{
                         duration: 3,
                         repeat: Infinity,
@@ -202,7 +227,7 @@ export default function Testimonials() {
                   )}
 
                   <div
-                    className={`relative h-full rounded-xl border p-5 backdrop-blur-md transition-all duration-300 ${
+                    className={`relative h-full rounded-xl border p-4 backdrop-blur-md transition-all duration-300 sm:p-5 ${
                       item.highlight
                         ? "border-[#D4AF37]/25 bg-[#D4AF37]/[0.04]"
                         : "border-white/10 bg-white/[0.03] group-hover:border-[#D4AF37]/25"
@@ -218,7 +243,7 @@ export default function Testimonials() {
                       />
                     </div>
 
-                    <p className="relative mb-5 text-sm leading-relaxed text-[#F2D6A0]/75">
+                    <p className="relative mb-4 text-sm leading-relaxed text-[#F2D6A0]/75">
                       {item.text}
                     </p>
 

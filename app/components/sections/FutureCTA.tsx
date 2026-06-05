@@ -76,7 +76,7 @@ export default function FutureCTA() {
   }, []);
 
   return (
-    <section className="relative py-12 overflow-hidden">
+    <section className="relative py-8 lg:py-12 overflow-hidden">
       {/* Background layers */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0d0720]/60 to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_70%_at_50%_50%,rgba(55,20,100,0.3),transparent_75%)]" />
